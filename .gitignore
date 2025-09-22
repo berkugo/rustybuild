@@ -1,0 +1,28 @@
+# Rust
+target/
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+bin/
+lib/
+
+# MyBuild cache
+.mybuild/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

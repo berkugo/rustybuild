@@ -1,0 +1,27 @@
+[package]
+name = "spark"
+version = "0.1.0"
+edition = "2021"
+description = "Spark - A modern, fast build tool for C++ projects written in Rust"
+authors = ["Your Name <your.email@example.com>"]
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+colored = "2.1"
+walkdir = "2.4"
+sha2 = "0.10"
+hex = "0.4"
+rayon = "1.8"
+anyhow = "1.0"
+thiserror = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+indicatif = "0.17"
+glob = "0.3"
+num_cpus = "1.16"
+dialoguer = "0.11"
+
+[[bin]]
+name = "spark"
+path = "src/main.rs"
