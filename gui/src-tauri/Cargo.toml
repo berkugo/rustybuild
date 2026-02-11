@@ -1,15 +1,15 @@
 [package]
-name = "oximake-gui"
+name = "ngmake-gui"
 version = "0.1.0"
 edition = "2021"
-description = "GUI for OxiMake"
-default-run = "oximake-gui"
+description = "GUI for ngmake"
+default-run = "ngmake-gui"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-oximake = { path = "../.." }
+ngmake = { path = "../.." }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri = { version = "2", features = [] }

@@ -126,7 +126,7 @@ fn build_ninja_style(
     let verbose = options.show_verbose_output();
 
     if let Some(tx) = output_tx {
-        let _ = tx.send(format!("__OXIMAKE_TOTAL__\t{}", total_targets));
+        let _ = tx.send(format!("__ngmake_TOTAL__\t{}", total_targets));
     }
 
     let built_targets: Arc<Mutex<HashMap<String, PathBuf>>> = Arc::new(Mutex::new(HashMap::new()));
@@ -421,7 +421,7 @@ fn build_ninja_style(
             "--- {} targets, {} successful, {} failed ---",
             total_targets, successful, failed
         ));
-        let _ = tx.send(format!("__OXIMAKE_FINISH__\t{}\t{}\t{}\t{}", success, total_targets, successful, failed));
+        let _ = tx.send(format!("__ngmake_FINISH__\t{}\t{}\t{}\t{}", success, total_targets, successful, failed));
     }
 
     BuildResult {

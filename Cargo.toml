@@ -1,11 +1,11 @@
 [package]
-name = "oximake"
+name = "ngmake"
 version = "0.1.0"
 edition = "2021"
-description = "OxiMake - Modern C++ build tool with DAG-based dependency resolution, parallel compilation, and nested build.toml support"
+description = "ngmake - Modern C++ build tool with DAG-based dependency resolution, parallel compilation, and nested build.toml support"
 
 [lib]
-name = "oximake"
+name = "ngmake"
 path = "src/lib.rs"
 
 [[bin]]

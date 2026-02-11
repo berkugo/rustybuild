@@ -1,4 +1,4 @@
-use oximake::{find_workspace_root, parse_and_graph, build_and_collect_output, build_and_stream_output, clean_project_and_stream_output, convert_cmake_to_toml_files};
+use ngmake::{find_workspace_root, parse_and_graph, build_and_collect_output, build_and_stream_output, clean_project_and_stream_output, convert_cmake_to_toml_files};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
@@ -9,7 +9,7 @@ use tauri::{Emitter, EventTarget, Manager};
 struct BuildCancel(Arc<AtomicBool>);
 
 #[tauri::command]
-fn parse_build_toml(path: String) -> Result<oximake::ProjectInfo, String> {
+fn parse_build_toml(path: String) -> Result<ngmake::ProjectInfo, String> {
     parse_and_graph(PathBuf::from(path).as_path())
 }
 
@@ -92,12 +92,12 @@ fn run_build_async(
                 Ok(_) => {}
                 Err(e) => {
                     let _ = tx_for_error.send(format!("[ERROR] {}", e));
-                    let _ = tx_for_error.send("__OXIMAKE_FINISH__\tfalse\t0\t0\t1".to_string());
+                    let _ = tx_for_error.send("__ngmake_FINISH__\tfalse\t0\t0\t1".to_string());
                 }
             }
         });
         for line in rx {
-            if line.starts_with("__OXIMAKE_FINISH__") {
+            if line.starts_with("__ngmake_FINISH__") {
                 let parts: Vec<&str> = line.split('\t').collect();
                 let success = parts.get(1).map(|s| *s == "true").unwrap_or(false);
                 let total = parts.get(2).and_then(|s| s.parse().ok()).unwrap_or(0);
@@ -156,12 +156,12 @@ fn run_clean_async(app: tauri::AppHandle, config_path: String) -> Result<(), Str
                 Ok(()) => {}
                 Err(e) => {
                     let _ = tx_for_error.send(format!("[ERROR] {}", e));
-                    let _ = tx_for_error.send("__OXIMAKE_FINISH__\tfalse\t0\t0\t1".to_string());
+                    let _ = tx_for_error.send("__ngmake_FINISH__\tfalse\t0\t0\t1".to_string());
                 }
             }
         });
         for line in rx {
-            if line.starts_with("__OXIMAKE_FINISH__") {
+            if line.starts_with("__ngmake_FINISH__") {
                 let parts: Vec<&str> = line.split('\t').collect();
                 let success = parts.get(1).map(|s| *s == "true").unwrap_or(false);
                 let total = parts.get(2).and_then(|s| s.parse().ok()).unwrap_or(0);

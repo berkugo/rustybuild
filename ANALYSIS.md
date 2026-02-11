@@ -224,7 +224,7 @@ cd .
 build_type = "debug"  # veya "release", "relwithdebinfo", "minsizerel"
 
 # veya CLI'den:
-oximake --build-type release
+ngmake --build-type release
 ```
 
 **Etkisi:**
@@ -322,7 +322,7 @@ type = "executable"
 test = true  # Test olarak işaretle
 
 # CLI:
-oximake test  # Tüm test target'larını çalıştır
+ngmake test  # Tüm test target'larını çalıştır
 ```
 
 ### 8. **Cross-Compilation**

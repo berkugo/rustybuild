@@ -19,7 +19,7 @@ use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, mpsc};
 
 /// Cleans the project: removes all output dirs (containing .o, .a, .so and built exes).
-/// Sends progress lines to `output_tx` and a final `__OXIMAKE_FINISH__\ttrue\t0\t0\t0`.
+/// Sends progress lines to `output_tx` and a final `__ngmake_FINISH__\ttrue\t0\t0\t0`.
 pub fn clean_project_and_stream_output(
     config_path: &Path,
     output_tx: mpsc::Sender<String>,
@@ -35,13 +35,13 @@ pub fn clean_project_and_stream_output(
             let _ = output_tx.send(format!("[CLEAN] Removing {}", d.display()));
             if let Err(e) = std::fs::remove_dir_all(d) {
                 let _ = output_tx.send(format!("[ERROR] Failed to remove {}: {}", d.display(), e));
-                let _ = output_tx.send("__OXIMAKE_FINISH__\tfalse\t0\t0\t1".to_string());
+                let _ = output_tx.send("__ngmake_FINISH__\tfalse\t0\t0\t1".to_string());
                 return Err(e.to_string());
             }
         }
     }
     let _ = output_tx.send("[CLEAN] Done.".to_string());
-    let _ = output_tx.send("__OXIMAKE_FINISH__\ttrue\t0\t0\t0".to_string());
+    let _ = output_tx.send("__ngmake_FINISH__\ttrue\t0\t0\t0".to_string());
     Ok(())
 }
 
@@ -167,7 +167,7 @@ pub fn build_and_collect_output(
 }
 
 /// Runs the build in the current thread and sends each output line to `output_tx`.
-/// Sends a final line `__OXIMAKE_FINISH__\t{success}\t{total}\t{successful}\t{failed}` before closing the channel.
+/// Sends a final line `__ngmake_FINISH__\t{success}\t{total}\t{successful}\t{failed}` before closing the channel.
 /// Call from a background thread; another thread should receive from the paired receiver and emit to the GUI.
 /// `jobs`: parallel job count; None = auto. `ignore_errors`: continue building after a target fails (like make -i).
 /// `cancel`: when Some and set to true, build stops after the current job.
@@ -189,7 +189,7 @@ pub fn build_and_stream_output(
     };
     if order.levels.is_empty() {
         let _ = output_tx.send("[INFO] No targets to build.".to_string());
-        let _ = output_tx.send("__OXIMAKE_FINISH__\ttrue\t0\t0\t0".to_string());
+        let _ = output_tx.send("__ngmake_FINISH__\ttrue\t0\t0\t0".to_string());
         return Ok(true);
     }
 

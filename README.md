@@ -1,6 +1,10 @@
-# OxiMake — Modern C++ Build Tool
+<p align="center">
+  <img src="gui/src-tauri/icons/32x32.png" width="64" height="64" alt="ngmake" />
+</p>
 
-OxiMake is a modern, DAG-based dependency-resolving, multi-threaded C++ build tool. Written in Rust.
+# ngmake — Modern C++ Build Tool
+
+ngmake is a modern, DAG-based dependency-resolving, multi-threaded C++ build tool. Written in Rust.
 
 ## Features
 
@@ -21,39 +25,39 @@ OxiMake is a modern, DAG-based dependency-resolving, multi-threaded C++ build to
 cargo build --release
 ```
 
-Binary: `target/release/oximake`
+Binary: `target/release/ngm`
 
 ## Usage
 
 ```bash
 # Build with build.toml in current directory
-oximake
+ngm
 
 # Specify config file (-c / --config)
-oximake -c build.toml
-oximake --config /path/build.toml
+ngm -c build.toml
+ngm --config /path/build.toml
 
 # Build only specific targets (and their dependencies)
-oximake --target app
-oximake -t app -t benchmark
+ngm --target app
+ngm -t app -t benchmark
 
 # Clean output directories before building
-oximake --clean
+ngm --clean
 
 # Quiet mode (errors and short summary only)
-oximake -q
+ngm -q
 
 # Verbose output (including compiler commands)
-oximake -v
+ngm -v
 
 # Do not print LD_LIBRARY_PATH info
-oximake --no-ld-path
+ngm --no-ld-path
 
 # Build at most 4 targets in parallel (-j / --jobs)
-oximake -j 4
+ngm -j 4
 
 # All options
-oximake --help
+ngm --help
 ```
 
 ### Command-line options
@@ -121,20 +125,9 @@ To run:
 
 ```bash
 cd example
-../target/release/oximake build.toml
+../target/release/ngm build.toml
 LD_LIBRARY_PATH=build:$LD_LIBRARY_PATH ./build/app
 ```
-
-## Architecture
-
-| Module | Description |
-|--------|-------------|
-| `options.rs` | CLI options (clap: `--config`, `--target`, `--clean`, `-q`, `-v`, `-j`) |
-| `config.rs` | TOML parsing, recursive include loading, glob expansion |
-| `dag.rs` | DAG construction, topological sort, target filtering (`filter_order_for_targets`) |
-| `compiler.rs` | Compiler command building, compile + link, incremental build support |
-| `builder.rs` | Parallel build manager (level-by-level or make-style with `-j N`) |
-| `main.rs` | CLI entry point, orchestration |
 
 ## Parallel Build System
 
@@ -150,7 +143,7 @@ The build tool uses **Ninja-style parallel execution** by default:
 ### Manual Job Control (`-j N`)
 - Override automatic detection with `-j N` to limit concurrent jobs
 - Useful for resource-constrained environments
-- Example: `oximake build -j 4` limits to 4 parallel jobs
+- Example: `ngm build -j 4` limits to 4 parallel jobs
 
 ### Comparison with CMake
 
@@ -161,7 +154,7 @@ CMakeLists.txt → CMake → Makefile/Ninja → Make/Ninja → Build
 
 **Our approach:**
 ```
-build.toml → oximake → Build (directly)
+build.toml → ngmake → Build (directly)
 ```
 
 We combine CMake's configuration parsing with Ninja/Make's parallel execution in a single tool, eliminating the intermediate build file generation step.

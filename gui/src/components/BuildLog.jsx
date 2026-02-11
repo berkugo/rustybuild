@@ -64,7 +64,7 @@ export default function BuildLog({ lines, success, buildRunning = false, onCance
     };
 
     for (const line of lines) {
-      if (line.startsWith("__OXIMAKE_TOTAL__\t")) {
+      if (line.startsWith("__ngmake_TOTAL__\t")) {
         const n = parseInt(line.split("\t")[1], 10);
         if (!isNaN(n)) totalFromStart = n;
         // New build started: reset targets and summary so progress starts at 0/N
@@ -76,7 +76,7 @@ export default function BuildLog({ lines, success, buildRunning = false, onCance
         failedTargets = 0;
         continue;
       }
-      if (line.startsWith("__OXIMAKE_FINISH__")) continue;
+      if (line.startsWith("__ngmake_FINISH__")) continue;
 
       // Ninja-style: [TARGET:name] message
       if (line.startsWith("[TARGET:") && line.includes("] ")) {
@@ -212,7 +212,7 @@ export default function BuildLog({ lines, success, buildRunning = false, onCance
     };
   }, [lines]);
 
-  // Progress: when totalFromStart is set (build sent __OXIMAKE_TOTAL__), use it and completedCount so we start at 0/N
+  // Progress: when totalFromStart is set (build sent __ngmake_TOTAL__), use it and completedCount so we start at 0/N
   const totalForProgress = buildData.totalFromStart > 0
     ? buildData.totalFromStart
     : (buildData.summary.total > 0 ? buildData.summary.total : Math.max(buildData.targets.length, 1));
@@ -412,7 +412,7 @@ export default function BuildLog({ lines, success, buildRunning = false, onCance
             <div className="p-3 space-y-1">
               <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 px-3 py-2 mb-2">
                 <p className="text-xs font-medium text-slate-400 mb-2">Output</p>
-                {lines.filter((l) => !l.startsWith("__OXIMAKE_")).map((line, i) => (
+                {lines.filter((l) => !l.startsWith("__ngmake_")).map((line, i) => (
                   <div key={i} className={`text-xs font-mono py-0.5 ${line.includes("[ERROR]") ? "text-red-400" : line.includes("[CLEAN]") ? "text-teal-400/90" : "text-slate-300"}`}>
                     {line}
                   </div>
