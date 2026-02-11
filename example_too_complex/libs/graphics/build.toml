@@ -1,0 +1,17 @@
+[module]
+name = "graphics"
+includes = ["../math/build.toml", "../utils/build.toml"]
+
+[[target]]
+name = "graphics_base"
+type = "static_lib"
+sources = ["src/base.cpp", "src/renderer.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "graphics_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/shader.cpp"]
+include_dirs = ["include"]
+deps = ["graphics_base", "math_shared", "utils_shared"]
+

@@ -1,0 +1,9 @@
+[module]
+name = "queue"
+
+[[target]]
+name = "queue_service"
+type = "shared_lib"
+sources = ["src/queue.cpp", "src/message.cpp"]
+include_dirs = ["include"]
+

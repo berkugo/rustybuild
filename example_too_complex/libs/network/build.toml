@@ -1,0 +1,24 @@
+[module]
+name = "network"
+includes = ["../utils/build.toml", "../serialization/build.toml"]
+
+[[target]]
+name = "network_base"
+type = "static_lib"
+sources = ["src/base.cpp", "src/socket.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "network_http"
+type = "static_lib"
+sources = ["src/http.cpp", "src/client.cpp", "src/server.cpp"]
+include_dirs = ["include"]
+deps = ["network_base"]
+
+[[target]]
+name = "network_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/protocol.cpp"]
+include_dirs = ["include"]
+deps = ["network_base", "network_http", "utils_shared", "serialization_shared"]
+

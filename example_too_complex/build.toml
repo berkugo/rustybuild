@@ -1,0 +1,70 @@
+[project]
+name = "ComplexProject"
+version = "2.0.0"
+cxx_standard = 17
+includes = [
+    "libs/core/build.toml",
+    "libs/math/build.toml",
+    "libs/utils/build.toml",
+    "libs/io/build.toml",
+    "libs/network/build.toml",
+    "libs/graphics/build.toml",
+    "libs/audio/build.toml",
+    "libs/data/build.toml",
+    "libs/security/build.toml",
+    "libs/serialization/build.toml",
+    "services/auth/build.toml",
+    "services/db/build.toml",
+    "services/cache/build.toml",
+    "services/api/build.toml",
+    "services/logging/build.toml",
+    "services/monitoring/build.toml",
+    "services/config/build.toml",
+    "services/queue/build.toml",
+    "apps/client/build.toml",
+    "apps/server/build.toml",
+    "apps/admin/build.toml",
+    "apps/cli/build.toml",
+    "apps/daemon/build.toml",
+    "tests/unit/build.toml",
+    "tests/integration/build.toml",
+    "tests/performance/build.toml",
+    "tools/builder/build.toml",
+    "tools/formatter/build.toml",
+    "tools/analyzer/build.toml",
+    "tools/validator/build.toml",
+    "tools/generator/build.toml",
+    "benchmarks/cpu/build.toml",
+    "benchmarks/memory/build.toml",
+    "benchmarks/network/build.toml",
+    "benchmarks/disk/build.toml",
+    "benchmarks/graphics/build.toml",
+]
+
+# Main application that uses all modules
+[[target]]
+name = "main_app"
+type = "executable"
+sources = ["src/main.cpp"]
+include_dirs = []
+compiler_flags = ["-Wall"]
+deps = [
+    "core_shared",
+    "math_shared",
+    "utils_shared",
+    "io_shared",
+    "network_shared",
+    "graphics_shared",
+    "audio_shared",
+    "data_shared",
+    "security_shared",
+    "serialization_shared",
+    "auth_service",
+    "db_service",
+    "cache_service",
+    "api_service",
+    "logging_service",
+    "monitoring_service",
+    "config_service",
+    "queue_service",
+]

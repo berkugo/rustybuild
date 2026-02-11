@@ -1,0 +1,9 @@
+[module]
+name = "disk_benchmark"
+
+[[target]]
+name = "benchmark_disk"
+type = "executable"
+sources = ["src/main.cpp", "src/disk.cpp"]
+include_dirs = ["include"]
+

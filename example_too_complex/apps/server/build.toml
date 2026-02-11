@@ -1,0 +1,9 @@
+[module]
+name = "server"
+
+[[target]]
+name = "server_app"
+type = "executable"
+sources = ["src/main.cpp", "src/server.cpp"]
+include_dirs = ["include"]
+

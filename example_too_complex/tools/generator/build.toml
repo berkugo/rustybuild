@@ -1,0 +1,9 @@
+[module]
+name = "generator"
+
+[[target]]
+name = "generator_tool"
+type = "executable"
+sources = ["src/main.cpp", "src/generator.cpp"]
+include_dirs = ["include"]
+

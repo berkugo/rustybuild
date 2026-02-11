@@ -1,0 +1,9 @@
+[module]
+name = "analyzer"
+
+[[target]]
+name = "analyzer_tool"
+type = "executable"
+sources = ["src/main.cpp", "src/analyzer.cpp"]
+include_dirs = ["include"]
+

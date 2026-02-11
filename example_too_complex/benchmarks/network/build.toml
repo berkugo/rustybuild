@@ -1,0 +1,9 @@
+[module]
+name = "network_benchmark"
+
+[[target]]
+name = "benchmark_network"
+type = "executable"
+sources = ["src/main.cpp", "src/network.cpp"]
+include_dirs = ["include"]
+

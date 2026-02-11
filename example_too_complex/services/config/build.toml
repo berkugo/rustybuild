@@ -1,0 +1,9 @@
+[module]
+name = "config"
+
+[[target]]
+name = "config_service"
+type = "shared_lib"
+sources = ["src/config.cpp", "src/loader.cpp"]
+include_dirs = ["include"]
+

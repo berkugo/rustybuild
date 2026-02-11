@@ -1,0 +1,9 @@
+[module]
+name = "cpu_benchmark"
+
+[[target]]
+name = "benchmark_cpu"
+type = "executable"
+sources = ["src/main.cpp", "src/cpu.cpp"]
+include_dirs = ["include"]
+

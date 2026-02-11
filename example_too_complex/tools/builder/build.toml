@@ -1,0 +1,9 @@
+[module]
+name = "builder"
+
+[[target]]
+name = "builder_tool"
+type = "executable"
+sources = ["src/main.cpp", "src/builder.cpp"]
+include_dirs = ["include"]
+

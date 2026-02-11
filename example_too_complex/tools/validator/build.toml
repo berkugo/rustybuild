@@ -1,0 +1,9 @@
+[module]
+name = "validator"
+
+[[target]]
+name = "validator_tool"
+type = "executable"
+sources = ["src/main.cpp", "src/validator.cpp"]
+include_dirs = ["include"]
+

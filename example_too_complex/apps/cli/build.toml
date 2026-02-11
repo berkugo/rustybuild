@@ -1,0 +1,9 @@
+[module]
+name = "cli"
+
+[[target]]
+name = "cli_app"
+type = "executable"
+sources = ["src/main.cpp", "src/cli.cpp"]
+include_dirs = ["include"]
+

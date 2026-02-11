@@ -1,0 +1,9 @@
+[module]
+name = "logging"
+
+[[target]]
+name = "logging_service"
+type = "shared_lib"
+sources = ["src/logging.cpp", "src/logger.cpp"]
+include_dirs = ["include"]
+

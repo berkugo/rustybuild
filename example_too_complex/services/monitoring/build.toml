@@ -1,0 +1,9 @@
+[module]
+name = "monitoring"
+
+[[target]]
+name = "monitoring_service"
+type = "shared_lib"
+sources = ["src/monitoring.cpp", "src/metrics.cpp"]
+include_dirs = ["include"]
+

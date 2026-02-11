@@ -1,0 +1,17 @@
+[module]
+name = "audio"
+includes = ["../io/build.toml", "../utils/build.toml"]
+
+[[target]]
+name = "audio_base"
+type = "static_lib"
+sources = ["src/base.cpp", "src/player.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "audio_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/decoder.cpp"]
+include_dirs = ["include"]
+deps = ["audio_base", "io_shared", "utils_shared"]
+

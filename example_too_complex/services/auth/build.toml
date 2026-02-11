@@ -1,0 +1,9 @@
+[module]
+name = "auth"
+
+[[target]]
+name = "auth_service"
+type = "shared_lib"
+sources = ["src/auth.cpp", "src/token.cpp"]
+include_dirs = ["include"]
+

@@ -1,0 +1,24 @@
+[module]
+name = "math"
+includes = ["../utils/build.toml"]
+
+[[target]]
+name = "math_basic"
+type = "static_lib"
+sources = ["src/basic.cpp", "src/arithmetic.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "math_advanced"
+type = "static_lib"
+sources = ["src/advanced.cpp", "src/matrix.cpp", "src/vector.cpp"]
+include_dirs = ["include"]
+deps = ["math_basic"]
+
+[[target]]
+name = "math_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/fft.cpp"]
+include_dirs = ["include"]
+deps = ["math_basic", "math_advanced", "utils_shared"]
+

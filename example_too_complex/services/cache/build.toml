@@ -1,0 +1,9 @@
+[module]
+name = "cache"
+
+[[target]]
+name = "cache_service"
+type = "shared_lib"
+sources = ["src/cache.cpp", "src/memory.cpp"]
+include_dirs = ["include"]
+

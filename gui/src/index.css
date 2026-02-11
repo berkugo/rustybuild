@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-slate-950 text-white;
+}
+
+code, pre, .font-mono {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+/* ReactFlow overrides */
+.react-flow__node {
+  transition: all 0.2s ease;
+}
+
+.react-flow__node:hover {
+  transform: scale(1.05);
+  z-index: 10 !important;
+}
+
+.react-flow__node.selected {
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.3) !important;
+}
+
+.react-flow__edge-path {
+  transition: stroke-width 0.2s ease;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-width: 4 !important;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke-width: 4 !important;
+}
+
+.react-flow__handle {
+  width: 12px;
+  height: 12px;
+  background: rgba(20, 184, 166, 0.8);
+  border: 2px solid rgb(20, 184, 166);
+}
+
+.react-flow__handle:hover {
+  width: 16px;
+  height: 16px;
+  background: rgb(20, 184, 166);
+}
+
+.react-flow__controls {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.react-flow__controls-button {
+  background: #1a1a1a !important;
+  border: 1px solid rgba(20, 184, 166, 0.3) !important;
+  color: #fff !important;
+}
+
+.react-flow__controls-button:hover {
+  background: rgba(20, 184, 166, 0.2) !important;
+  border-color: rgb(20, 184, 166) !important;
+}
+
+.react-flow__minimap {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Build output scrollbar – slate/teal palette */
+.build-log-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.build-log-scroll::-webkit-scrollbar-track {
+  background: rgb(30 41 59 / 0.5);
+  border-radius: 4px;
+}
+.build-log-scroll::-webkit-scrollbar-thumb {
+  background: rgb(71 85 105);
+  border-radius: 4px;
+}
+.build-log-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(100 116 139);
+}
+.build-log-scroll::-webkit-scrollbar-thumb:active {
+  background: rgb(20 184 166 / 0.8);
+}

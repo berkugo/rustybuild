@@ -1,0 +1,24 @@
+[module]
+name = "core"
+includes = ["../utils/build.toml"]
+
+[[target]]
+name = "core_base"
+type = "static_lib"
+sources = ["src/base.cpp", "src/foundation.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "core_advanced"
+type = "static_lib"
+sources = ["src/advanced.cpp", "src/optimizer.cpp"]
+include_dirs = ["include"]
+deps = ["core_base"]
+
+[[target]]
+name = "core_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/plugin.cpp"]
+include_dirs = ["include"]
+deps = ["core_base", "core_advanced", "utils_shared"]
+

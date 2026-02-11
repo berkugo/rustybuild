@@ -1,0 +1,27 @@
+[module]
+name = "integration_tests"
+
+[[target]]
+name = "test_integration_api"
+type = "executable"
+sources = ["src/test_api.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_integration_db"
+type = "executable"
+sources = ["src/test_db.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_integration_auth"
+type = "executable"
+sources = ["src/test_auth.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_integration_cache"
+type = "executable"
+sources = ["src/test_cache.cpp"]
+include_dirs = ["include"]
+

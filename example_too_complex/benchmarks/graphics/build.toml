@@ -1,0 +1,9 @@
+[module]
+name = "graphics_benchmark"
+
+[[target]]
+name = "benchmark_graphics"
+type = "executable"
+sources = ["src/main.cpp", "src/graphics.cpp"]
+include_dirs = ["include"]
+

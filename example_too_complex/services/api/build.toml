@@ -1,0 +1,9 @@
+[module]
+name = "api"
+
+[[target]]
+name = "api_service"
+type = "shared_lib"
+sources = ["src/api.cpp", "src/endpoint.cpp"]
+include_dirs = ["include"]
+

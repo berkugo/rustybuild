@@ -1,0 +1,9 @@
+[module]
+name = "client"
+
+[[target]]
+name = "client_app"
+type = "executable"
+sources = ["src/main.cpp", "src/client.cpp"]
+include_dirs = ["include"]
+

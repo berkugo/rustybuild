@@ -1,0 +1,21 @@
+[module]
+name = "performance_tests"
+
+[[target]]
+name = "test_perf_cpu"
+type = "executable"
+sources = ["src/test_cpu.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_perf_memory"
+type = "executable"
+sources = ["src/test_memory.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_perf_network"
+type = "executable"
+sources = ["src/test_network.cpp"]
+include_dirs = ["include"]
+

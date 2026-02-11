@@ -1,0 +1,23 @@
+[module]
+name = "serialization"
+includes = ["../utils/build.toml"]
+
+[[target]]
+name = "serialization_json"
+type = "static_lib"
+sources = ["src/json.cpp", "src/parser.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "serialization_xml"
+type = "static_lib"
+sources = ["src/xml.cpp", "src/validator.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "serialization_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/binary.cpp"]
+include_dirs = ["include"]
+deps = ["serialization_json", "serialization_xml", "utils_shared"]
+

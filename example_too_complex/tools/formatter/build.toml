@@ -1,0 +1,9 @@
+[module]
+name = "formatter"
+
+[[target]]
+name = "formatter_tool"
+type = "executable"
+sources = ["src/main.cpp", "src/formatter.cpp"]
+include_dirs = ["include"]
+

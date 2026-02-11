@@ -1,0 +1,9 @@
+[module]
+name = "daemon"
+
+[[target]]
+name = "daemon_app"
+type = "executable"
+sources = ["src/main.cpp", "src/daemon.cpp"]
+include_dirs = ["include"]
+

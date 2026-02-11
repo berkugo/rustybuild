@@ -1,0 +1,22 @@
+[project]
+name = "Berkay"
+version = "0.1.0"
+
+[[target]]
+name = "Berkay_lib"
+type = "static"
+sources = ["src/lib/**/*.cpp"]
+include_dirs = ["include"]
+flags = ["-O2", "-Wall", "-std=c++11"]
+compiler = "g++"
+output_dir = "build"
+
+[[target]]
+name = "Berkay"
+type = "executable"
+sources = ["src/main.cpp"]
+include_dirs = ["include"]
+libs = ["Berkay_lib"]
+flags = ["-O2", "-Wall", "-std=c++11"]
+compiler = "g++"
+output_dir = "build"

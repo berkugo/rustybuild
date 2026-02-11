@@ -1,0 +1,9 @@
+[module]
+name = "admin"
+
+[[target]]
+name = "admin_app"
+type = "executable"
+sources = ["src/main.cpp", "src/admin.cpp"]
+include_dirs = ["include"]
+

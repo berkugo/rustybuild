@@ -1,0 +1,33 @@
+[module]
+name = "unit_tests"
+
+[[target]]
+name = "test_core"
+type = "executable"
+sources = ["src/test_core.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_math"
+type = "executable"
+sources = ["src/test_math.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_utils"
+type = "executable"
+sources = ["src/test_utils.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_io"
+type = "executable"
+sources = ["src/test_io.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "test_network"
+type = "executable"
+sources = ["src/test_network.cpp"]
+include_dirs = ["include"]
+

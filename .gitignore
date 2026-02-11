@@ -1,28 +1,42 @@
 # Rust
-target/
+/target
+**/target/
 Cargo.lock
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# GUI (Node / Tauri)
+node_modules/
+gui/node_modules/
+**/dist/
+**/.vite/
 
 # OS
 .DS_Store
 Thumbs.db
+*.swp
+*~
 
-# Build artifacts
+# IDE / editors
+.idea/
+.vscode/
+*.sublime-*
+
+# C++ build outputs (from ngmake)
 build/
-bin/
-lib/
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
 
-# MyBuild cache
-.mybuild/
-
-# Logs
+# Logs and local env
 *.log
+.env
+.env.local
+.env.*.local
 
-# Temporary files
+# Test / temp
 *.tmp
-*.temp
+.cache/

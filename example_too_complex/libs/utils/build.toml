@@ -1,0 +1,22 @@
+[module]
+name = "utils"
+
+[[target]]
+name = "utils_string"
+type = "static_lib"
+sources = ["src/str_utils.cpp", "src/format.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "utils_file"
+type = "static_lib"
+sources = ["src/file.cpp", "src/path.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "utils_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/helper.cpp"]
+include_dirs = ["include"]
+deps = ["utils_string", "utils_file"]
+

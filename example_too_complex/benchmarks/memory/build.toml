@@ -1,0 +1,9 @@
+[module]
+name = "memory_benchmark"
+
+[[target]]
+name = "benchmark_memory"
+type = "executable"
+sources = ["src/main.cpp", "src/memory.cpp"]
+include_dirs = ["include"]
+

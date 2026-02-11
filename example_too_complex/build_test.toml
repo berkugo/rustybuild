@@ -1,0 +1,13 @@
+[project]
+name = "TestProject"
+version = "1.0.0"
+cxx_standard = 17
+includes = ["libs/core/build.toml"]
+
+[[target]]
+name = "test_app"
+type = "executable"
+sources = ["src/main.cpp"]
+include_dirs = ["include"]
+deps = ["core_base"]
+

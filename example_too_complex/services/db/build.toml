@@ -1,0 +1,9 @@
+[module]
+name = "db"
+
+[[target]]
+name = "db_service"
+type = "shared_lib"
+sources = ["src/db.cpp", "src/connection.cpp"]
+include_dirs = ["include"]
+

@@ -1,0 +1,17 @@
+[module]
+name = "data"
+includes = ["../serialization/build.toml", "../io/build.toml"]
+
+[[target]]
+name = "data_storage"
+type = "static_lib"
+sources = ["src/storage.cpp", "src/database.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "data_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/query.cpp"]
+include_dirs = ["include"]
+deps = ["data_storage", "serialization_shared", "io_shared"]
+

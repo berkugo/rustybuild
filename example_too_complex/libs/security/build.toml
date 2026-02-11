@@ -1,0 +1,17 @@
+[module]
+name = "security"
+includes = ["../utils/build.toml"]
+
+[[target]]
+name = "security_crypto"
+type = "static_lib"
+sources = ["src/crypto.cpp", "src/hash.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "security_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/encrypt.cpp"]
+include_dirs = ["include"]
+deps = ["security_crypto", "utils_shared"]
+

@@ -1,0 +1,23 @@
+[module]
+name = "io"
+includes = ["../utils/build.toml"]
+
+[[target]]
+name = "io_reader"
+type = "static_lib"
+sources = ["src/reader.cpp", "src/parser.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "io_writer"
+type = "static_lib"
+sources = ["src/writer.cpp", "src/formatter.cpp"]
+include_dirs = ["include"]
+
+[[target]]
+name = "io_shared"
+type = "shared_lib"
+sources = ["src/shared.cpp", "src/stream.cpp"]
+include_dirs = ["include"]
+deps = ["io_reader", "io_writer", "utils_shared"]
+
