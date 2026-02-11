@@ -6,6 +6,42 @@
 
 ngmake is a modern, DAG-based dependency-resolving, multi-threaded C++ build tool. Written in Rust.
 
+## Build pipeline: CMake vs ngmake
+
+### CMake approach
+
+1. **CMakeLists.txt** — You describe targets, sources, and dependencies in CMake’s language (macros, generator expressions, platform checks).
+2. **CMake (configure)** — CMake runs and *generates* build files: Makefile or Ninja build rules for your platform.
+3. **Makefile / build.ninja** — Generated text files that describe every compile and link command.
+4. **Make / Ninja (build)** — A separate process reads those files and runs the compiler/linker.
+
+```
+CMakeLists.txt  →  CMake (configure)  →  Makefile / build.ninja  →  Make / Ninja  →  Build
+      ↑                    ↑                          ↑                    ↑
+   Your config      Generates rules            Generated file         Runs compiler
+```
+
+So you always have **two stages**: configure (CMake) and build (Make/Ninja), and a layer of generated build files in between.
+
+### Our approach
+
+1. **build.toml** — You describe targets, sources, and dependencies in TOML (simple, declarative).
+2. **ngmake** — Reads the config, resolves the dependency DAG, and **directly** runs the compiler and linker in parallel. No intermediate Makefile or Ninja file is generated.
+
+```
+build.toml  →  ngmake  →  Build
+      ↑            ↑
+  Your config   Compiles & links directly (Ninja-style parallelism)
+```
+
+So you have **one stage**: ngmake both “configures” and “builds” in a single run, with the same kind of parallel job scheduling as Ninja, but without generating any build script.
+
+### Why it matters
+
+- **Fewer moving parts** — No CMake binary, no Make/Ninja, no generated build directory to manage.
+- **Faster iteration** — Change `build.toml` and run `ngm` again; no configure step.
+- **Same parallelism** — ngmake uses a Ninja-style job queue and `-j N`, so you get similar parallel build behavior without the extra toolchain.
+
 ## Features
 
 - **TOML-based configuration** — Project definition via `build.toml`, nested submodule support (`includes`)
@@ -145,19 +181,7 @@ The build tool uses **Ninja-style parallel execution** by default:
 - Useful for resource-constrained environments
 - Example: `ngm build -j 4` limits to 4 parallel jobs
 
-### Comparison with CMake
-
-**CMake approach:**
-```
-CMakeLists.txt → CMake → Makefile/Ninja → Make/Ninja → Build
-```
-
-**Our approach:**
-```
-build.toml → ngmake → Build (directly)
-```
-
-We combine CMake's configuration parsing with Ninja/Make's parallel execution in a single tool, eliminating the intermediate build file generation step.
+See **Build pipeline: CMake vs ngmake** at the top of this README for how this compares to the CMake → Make/Ninja workflow.
 
 ## GUI (Tauri + React + Tailwind)
 
