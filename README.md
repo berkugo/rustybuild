@@ -2,7 +2,7 @@
   <img src="assets/logo.png" width="320" alt="ngmake" />
 </p>
 
-# ngmake — Modern C++ Build Tool
+# ngmake - Make Builds Great Again
 
 ngmake is a modern, DAG-based dependency-resolving, multi-threaded C++ build tool. Written in Rust.
 
