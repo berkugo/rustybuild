@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="gui/src-tauri/icons/32x32.png" width="64" height="64" alt="ngmake" />
+  <img src="assets/logo.png" width="320" alt="ngmake" />
 </p>
 
 # ngmake — Modern C++ Build Tool

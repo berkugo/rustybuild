@@ -7,7 +7,7 @@
 //   - .cpp → .o compilation (sources to object files)
 //   - Linking .o files into an executable
 //   - Archiving .o files into a static library (.a)
-//   - Linking .o files into a shared library (.so)
+//   - Linking .o files into a shared library (.so on Unix, .dll on Windows)
 //
 // LD_LIBRARY_PATH is set automatically for shared library resolution.
 // ============================================================================
@@ -17,6 +17,26 @@ use std::process::Command;
 
 use rayon::prelude::*;
 use crate::config::{ResolvedTarget, TargetType};
+
+// ---------------------------------------------------------------------------
+// Cross-platform path for compiler args: use forward slashes so the compiler
+// always receives a single, unambiguous path. Fixes Windows backslash
+// mangling (CreateProcess/C runtime); no-op on Unix where paths already use /.
+// GCC, Clang, and MinGW accept forward slashes on all platforms.
+// On Windows, strip the verbatim prefix "\\?\" so the compiler gets "C:/..."
+// instead of "//?/C:/..." (which some tools misparse as "//filename").
+// ---------------------------------------------------------------------------
+fn path_arg(p: &Path) -> String {
+    let s = p.to_string_lossy().to_string();
+    let s = if s.starts_with(r"\\?\") { s[4..].to_string() } else { s };
+    s.replace('\\', "/")
+}
+
+/// Shared library filename: lib{name}.so on Unix, lib{name}.dll on Windows.
+fn shared_lib_filename(name: &str) -> String {
+    let ext = if cfg!(windows) { "dll" } else { "so" };
+    format!("lib{}.{}", name, ext)
+}
 
 // ---------------------------------------------------------------------------
 // Compilation result
@@ -141,7 +161,7 @@ pub fn build_target(
             target.output_dir.join(&lib_name)
         }
         TargetType::SharedLib => {
-            let lib_name = format!("lib{}.so", target.name);
+            let lib_name = shared_lib_filename(&target.name);
             target.output_dir.join(&lib_name)
         }
     };
@@ -270,13 +290,13 @@ fn compile_one_source(
 
     let mut cmd = Command::new(target.compiler.command());
     cmd.arg("-c");
-    cmd.arg(source);
-    cmd.arg("-o").arg(obj_path);
+    cmd.arg(path_arg(source));
+    cmd.arg("-o").arg(path_arg(obj_path));
     if target.target_type == TargetType::SharedLib {
         cmd.arg("-fPIC");
     }
     for include_dir in &target.include_dirs {
-        cmd.arg("-I").arg(include_dir);
+        cmd.arg("-I").arg(path_arg(include_dir));
     }
     if let Some(std) = target.cxx_standard {
         cmd.arg(format!("-std=c++{}", std));
@@ -353,7 +373,7 @@ pub fn run_link_step(
             target.output_dir.join(&lib_name)
         }
         TargetType::SharedLib => {
-            let lib_name = format!("lib{}.so", target.name);
+            let lib_name = shared_lib_filename(&target.name);
             target.output_dir.join(&lib_name)
         }
     };
@@ -436,18 +456,18 @@ fn link_executable(
 
     // Object files
     for obj in object_files {
-        cmd.arg(obj);
+        cmd.arg(path_arg(obj));
     }
 
     // Output file
-    cmd.arg("-o").arg(&output_path);
+    cmd.arg("-o").arg(path_arg(&output_path));
 
     // Add built dependency libraries (transitive, correct order)
     add_dependency_link_args(&mut cmd, dep_names, built_targets);
 
     // Library directories (-L)
     for lib_dir in &target.lib_dirs {
-        cmd.arg("-L").arg(lib_dir);
+        cmd.arg("-L").arg(path_arg(lib_dir));
     }
 
     // Libraries (-l)
@@ -489,10 +509,10 @@ fn create_static_lib(
     // Archive with ar
     let mut cmd = Command::new("ar");
     cmd.arg("rcs");
-    cmd.arg(&output_path);
+    cmd.arg(path_arg(&output_path));
 
     for obj in object_files {
-        cmd.arg(obj);
+        cmd.arg(path_arg(obj));
     }
 
     run_command(cmd, messages)?;
@@ -500,7 +520,7 @@ fn create_static_lib(
 }
 
 // ---------------------------------------------------------------------------
-// Create shared library (.so)
+// Create shared library (.so on Unix, .dll on Windows)
 // ---------------------------------------------------------------------------
 fn link_shared_lib(
     target: &ResolvedTarget,
@@ -509,7 +529,7 @@ fn link_shared_lib(
     dep_names: &[String],
     messages: &mut Vec<String>,
 ) -> Result<PathBuf, String> {
-    let lib_name = format!("lib{}.so", target.name);
+    let lib_name = shared_lib_filename(&target.name);
     let output_path = target.output_dir.join(&lib_name);
 
     messages.push(format!(
@@ -522,18 +542,18 @@ fn link_shared_lib(
 
     // Object files
     for obj in object_files {
-        cmd.arg(obj);
+        cmd.arg(path_arg(obj));
     }
 
     // Output file
-    cmd.arg("-o").arg(&output_path);
+    cmd.arg("-o").arg(path_arg(&output_path));
 
     // Add dependency libraries (transitive, correct order)
     add_dependency_link_args(&mut cmd, dep_names, built_targets);
 
     // Library directories (-L)
     for lib_dir in &target.lib_dirs {
-        cmd.arg("-L").arg(lib_dir);
+        cmd.arg("-L").arg(path_arg(lib_dir));
     }
 
     // Libraries (-l)
@@ -559,6 +579,9 @@ fn link_shared_lib(
 // ---------------------------------------------------------------------------
 // Add link arguments for built dependency libraries
 // ---------------------------------------------------------------------------
+// We pass the full path to each built library so the linker always finds it.
+// This avoids -l/ -L lookup differences (e.g. MinGW often looks for .a/.dll.a
+// and may not resolve libfoo.so when given -lfoo).
 fn add_dependency_link_args(
     cmd: &mut Command,
     dep_names: &[String],
@@ -566,28 +589,25 @@ fn add_dependency_link_args(
 ) {
     for dep_name in dep_names {
         if let Some(dep_path) = built_targets.get(dep_name) {
-            // Add dependency library directory with -L
-            if let Some(parent) = dep_path.parent() {
-                cmd.arg("-L").arg(parent);
-            }
-
-            // Add library name with -l (strip lib prefix and extension)
-            let filename = dep_path
-                .file_stem()
-                .unwrap_or_default()
-                .to_string_lossy()
-                .to_string();
-
-            // "libXYZ" → "XYZ"
-            let lib_name = if filename.starts_with("lib") {
-                &filename[3..]
+            if dep_path.exists() {
+                cmd.arg(path_arg(dep_path));
             } else {
-                // Static lib or raw object: add path directly
-                cmd.arg(dep_path);
-                continue;
-            };
-
-            cmd.arg(format!("-l{}", lib_name));
+                // Fallback: -L dir -l name (for external or missing libs)
+                if let Some(parent) = dep_path.parent() {
+                    cmd.arg("-L").arg(path_arg(parent));
+                }
+                let filename = dep_path
+                    .file_stem()
+                    .unwrap_or_default()
+                    .to_string_lossy()
+                    .to_string();
+                let lib_name = if filename.starts_with("lib") {
+                    &filename[3..]
+                } else {
+                    &filename[..]
+                };
+                cmd.arg(format!("-l{}", lib_name));
+            }
         }
     }
 }

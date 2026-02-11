@@ -18,7 +18,7 @@ use std::path::Path;
 use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, mpsc};
 
-/// Cleans the project: removes all output dirs (containing .o, .a, .so and built exes).
+/// Cleans the project: removes all output dirs (containing .o, .a, .so/.dll and built exes).
 /// Sends progress lines to `output_tx` and a final `__ngmake_FINISH__\ttrue\t0\t0\t0`.
 pub fn clean_project_and_stream_output(
     config_path: &Path,
